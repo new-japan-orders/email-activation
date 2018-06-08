@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class AddActivationTo{{model_singular_camel}}Model extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('{{model_plural_snake}}', function (Blueprint $table) {
+            $table->dateTime('activated_at')->nullable();
+        });
+        Schema::create('{{model_singular_snake}}_activates', function (Blueprint $table) {
+            $table->string('email')->index();
+            $table->string('token');
+            $table->timestamp('created_at')->nullable();
+        }); 
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('{{model_plural_snake}}', function (Blueprint $table) {
+            $table->dropColumn('activated_at');
+        });
+        Schema::dropIfExists('{{model_singular_snake}}_activates');
+    }
+}
